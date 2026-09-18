@@ -4,6 +4,16 @@ English | [简体中文](README.zh-CN.md)
 
 App Installer is a macOS application for installing Android and iOS apps. Connect a device, then drag and drop or select an APK for Android, or an IPA for iPhone and iPad.
 
+## Download
+
+App Installer requires macOS 13 or later. Choose the package that matches your Mac:
+
+- [Universal 2](https://github.com/YPJCoding/app-installer/releases/latest/download/App-Installer-macOS13-universal.dmg) — recommended; supports both Apple Silicon and Intel Macs
+- [Apple Silicon](https://github.com/YPJCoding/app-installer/releases/latest/download/App-Installer-macOS13-arm64.dmg) — smaller download for Macs with an M-series chip
+- [Intel](https://github.com/YPJCoding/app-installer/releases/latest/download/App-Installer-macOS13-intel.dmg) — for Intel-based Macs
+
+Open the DMG and drag App Installer into the Applications folder. If macOS blocks the first launch, Control-click the application, choose **Open**, and confirm once. Future versions can be installed from **App Installer > Check for Updates**.
+
 ## Features
 
 - Automatically detects connected Android devices, iPhones, and iPads
