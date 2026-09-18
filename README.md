@@ -6,11 +6,9 @@ App Installer is a macOS application for installing Android and iOS apps. Connec
 
 ## Download
 
-App Installer requires macOS 13 or later. Choose the package that matches your Mac:
+App Installer requires macOS 13 or later. One Universal 2 package supports both Apple Silicon and Intel Macs:
 
-- [Universal 2](https://github.com/YPJCoding/app-installer/releases/latest/download/App-Installer-macOS13-universal.dmg) — recommended; supports both Apple Silicon and Intel Macs
-- [Apple Silicon](https://github.com/YPJCoding/app-installer/releases/latest/download/App-Installer-macOS13-arm64.dmg) — smaller download for Macs with an M-series chip
-- [Intel](https://github.com/YPJCoding/app-installer/releases/latest/download/App-Installer-macOS13-intel.dmg) — for Intel-based Macs
+- [Download App Installer](https://github.com/YPJCoding/app-installer/releases/latest/download/App-Installer-macOS13.dmg)
 
 Open the DMG and drag App Installer into the Applications folder. If macOS blocks the first launch, Control-click the application, choose **Open**, and confirm once. Future versions can be installed from **App Installer > Check for Updates**.
 
@@ -22,7 +20,7 @@ Open the DMG and drag App Installer into the Applications folder. If macOS block
 - Supports Android replacement installs, version downgrades, and automatic permission grants
 - Shows installation progress, command output, and readable descriptions for common errors
 - Bundles the required Android and iOS command-line tools, with no Homebrew or Android Studio installation required for users
-- Builds for Apple Silicon, Intel, or both as a Universal 2 application
+- Runs natively on Apple Silicon and Intel Macs as a Universal 2 application
 
 ## Requirements
 
@@ -41,18 +39,14 @@ IPA installation remains subject to Apple's code-signing and device authorizatio
 
 ## Build from Source
 
-App Installer is built with Swift and SwiftUI and uses Swift Package Manager for dependencies. The repository includes the prebuilt command-line tools required by the application, so a standard build does not require a separate Android or iOS toolchain.
+App Installer is built with Swift and SwiftUI and uses Swift Package Manager for dependencies. Install Android Platform Tools before building; the required iOS tools are already included in the repository.
+
+```bash
+brew install android-platform-tools
+```
 
 ```bash
 make build
-```
-
-Build for a specific architecture:
-
-```bash
-make build-arm64     # Apple Silicon
-make build-intel     # Intel
-make build-universal # Apple Silicon + Intel
 ```
 
 Build and launch the application:
@@ -70,17 +64,13 @@ make test
 Build output is written to:
 
 ```text
-build/arm64/App Installer.app
-build/intel/App Installer.app
-build/universal/App Installer.app
+build/App Installer.app
 ```
 
 ## Create a DMG
 
 ```bash
-make dmg-arm64
-make dmg-intel
-make dmg-universal
+make dmg
 ```
 
 Generated DMG files and their SHA-256 checksums are written to `dist/`.
@@ -94,7 +84,7 @@ brew install automake libtool cmake pkg-config
 ./scripts/build-ios-tools-universal.sh
 ```
 
-The script builds the tools for arm64 and x86_64 with macOS 13 as the minimum deployment target, then combines them into Universal 2 binaries.
+The script creates Universal 2 iOS tools with macOS 13 as the minimum deployment target.
 
 ## Third-Party Components
 

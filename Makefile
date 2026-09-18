@@ -1,32 +1,15 @@
-.PHONY: build build-universal build-arm64 build-intel dmg-arm64 dmg-intel dmg-universal update-archive release-update publish-update run test verify clean
+.PHONY: build dmg update-archive publish-update run test verify clean
 
-APP := build/universal/App Installer.app
+APP := build/App Installer.app
 
-build: build-universal
+build:
+	./App/build.sh
 
-build-universal:
-	./App/build.sh universal
-
-build-arm64:
-	./App/build.sh arm64
-
-build-intel:
-	./App/build.sh intel
-
-dmg-arm64:
-	./scripts/package-dmg.sh arm64
-
-dmg-intel:
-	./scripts/package-dmg.sh intel
-
-dmg-universal:
-	./scripts/package-dmg.sh universal
+dmg:
+	./scripts/package-dmg.sh
 
 update-archive:
 	./scripts/package-update.sh
-
-release-update:
-	./scripts/release-update.sh
 
 publish-update:
 	./scripts/publish-update.sh

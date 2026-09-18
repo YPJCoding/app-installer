@@ -1,17 +1,11 @@
 #!/bin/zsh
 set -euo pipefail
 
-[[ $# -ge 1 && $# -le 2 ]] || { echo "用法: embed-tools.sh <目标 Tools 目录> [universal|arm64|x86_64]" >&2; exit 2; }
+[[ $# -eq 1 ]] || { echo "用法: embed-tools.sh <目标 Tools 目录>" >&2; exit 2; }
 
 TOOLS_DIR="$1"
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-TARGET_ARCH="${2:-universal}"
-case "$TARGET_ARCH" in
-    universal) VENDOR_DIR="$ROOT_DIR/Vendor/macos13-universal" ;;
-    arm64) VENDOR_DIR="$ROOT_DIR/Vendor/macos13-arm64" ;;
-    x86_64) VENDOR_DIR="$ROOT_DIR/Vendor/macos13-x86_64" ;;
-    *) echo "不支持的工具架构: $TARGET_ARCH" >&2; exit 2 ;;
-esac
+VENDOR_DIR="$ROOT_DIR/Vendor/macos13-universal"
 BIN_DIR="$TOOLS_DIR/bin"
 LIB_DIR="$TOOLS_DIR/lib"
 LICENSE_DIR="$TOOLS_DIR/licenses"
@@ -41,12 +35,13 @@ for name in adb idevice_id ideviceinstaller; do
     chmod 755 "$BIN_DIR/$name"
 done
 
-if [[ "$TARGET_ARCH" != "universal" ]]; then
-    thin_adb="$TOOLS_DIR/adb-$TARGET_ARCH"
-    lipo "$BIN_DIR/adb" -thin "$TARGET_ARCH" -output "$thin_adb"
-    mv "$thin_adb" "$BIN_DIR/adb"
-    chmod 755 "$BIN_DIR/adb"
-fi
+for bundled_tool in adb idevice_id ideviceinstaller; do
+    architectures="$(lipo -archs "$BIN_DIR/$bundled_tool")"
+    [[ "$architectures" == *arm64* && "$architectures" == *x86_64* ]] || {
+        echo "$bundled_tool 不是 Universal 2: $architectures" >&2
+        exit 1
+    }
+done
 
 for ios_tool in idevice_id ideviceinstaller; do
     minos="$(vtool -show-build "$BIN_DIR/$ios_tool" | awk '/minos/{print $2}' | sort -Vu)"
@@ -55,10 +50,6 @@ for ios_tool in idevice_id ideviceinstaller; do
         echo "请先运行 ./scripts/build-ios-tools-universal.sh" >&2
         exit 1
     }
-    if [[ "$TARGET_ARCH" != "universal" ]] && [[ "$(lipo -archs "$BIN_DIR/$ios_tool")" != "$TARGET_ARCH" ]]; then
-        echo "$ios_tool 架构错误，预期 $TARGET_ARCH" >&2
-        exit 1
-    fi
 done
 
 # Homebrew 的 iOS 工具依赖多组动态库。递归复制，并改成 App 内相对路径。

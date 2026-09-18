@@ -10,7 +10,7 @@ REPOSITORY="YPJCoding/app-installer"
 RELEASE_TAG="updates"
 
 [[ -f "$ARCHIVE_PATH" && -f "$APPCAST_PATH" ]] || {
-    echo "请先运行 make release-update。" >&2
+    echo "请先运行 make update-archive && ./scripts/generate-appcast.sh。" >&2
     exit 1
 }
 

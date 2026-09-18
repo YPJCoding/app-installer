@@ -6,11 +6,9 @@ App Installer 是一款用于 macOS 的 Android 与 iOS 应用安装器。连接
 
 ## 下载
 
-App Installer 支持 macOS 13 及更高版本，请根据 Mac 的处理器选择安装包：
+App Installer 支持 macOS 13 及更高版本。一个 Universal 2 安装包同时支持 Apple Silicon 和 Intel Mac：
 
-- [Universal 2](https://github.com/YPJCoding/app-installer/releases/latest/download/App-Installer-macOS13-universal.dmg) — 推荐，同时支持 Apple Silicon 和 Intel Mac
-- [Apple Silicon](https://github.com/YPJCoding/app-installer/releases/latest/download/App-Installer-macOS13-arm64.dmg) — 适用于 M 系列芯片，下载体积更小
-- [Intel](https://github.com/YPJCoding/app-installer/releases/latest/download/App-Installer-macOS13-intel.dmg) — 适用于 Intel 处理器的 Mac
+- [下载 App Installer](https://github.com/YPJCoding/app-installer/releases/latest/download/App-Installer-macOS13.dmg)
 
 打开 DMG，将 App Installer 拖入“应用程序”文件夹。如果 macOS 首次启动时阻止打开，请按住 Control 键点击应用，选择“打开”并确认。后续版本可以通过“App Installer > 检查更新…”安装。
 
@@ -22,7 +20,7 @@ App Installer 支持 macOS 13 及更高版本，请根据 Mac 的处理器选择
 - 支持 Android 覆盖安装、版本降级和自动授予权限
 - 显示安装进度、命令输出及常见错误的中文说明
 - 集成所需的 Android 和 iOS 命令行工具，使用者无需安装 Homebrew 或 Android Studio
-- 支持 Apple Silicon、Intel 和 Universal 2 构建
+- 以 Universal 2 形式原生支持 Apple Silicon 和 Intel Mac
 
 ## 系统要求
 
@@ -41,18 +39,14 @@ IPA 的安装仍受 Apple 签名与设备授权规则限制。安装包必须具
 
 ## 从源码构建
 
-项目使用 Swift 和 SwiftUI 开发，并通过 Swift Package Manager 管理依赖。仓库已经包含应用运行所需的预编译命令行工具，普通构建不需要额外安装 Android 或 iOS 工具链。
+项目使用 Swift 和 SwiftUI 开发，并通过 Swift Package Manager 管理依赖。构建前需要安装 Android Platform Tools；仓库已经包含所需的 iOS 工具。
+
+```bash
+brew install android-platform-tools
+```
 
 ```bash
 make build
-```
-
-按架构构建：
-
-```bash
-make build-arm64     # Apple Silicon
-make build-intel     # Intel
-make build-universal # Apple Silicon + Intel
 ```
 
 构建并启动应用：
@@ -70,17 +64,13 @@ make test
 构建结果位于：
 
 ```text
-build/arm64/App Installer.app
-build/intel/App Installer.app
-build/universal/App Installer.app
+build/App Installer.app
 ```
 
 ## 制作 DMG
 
 ```bash
-make dmg-arm64
-make dmg-intel
-make dmg-universal
+make dmg
 ```
 
 生成的 DMG 和 SHA-256 校验文件位于 `dist/`。
@@ -94,7 +84,7 @@ brew install automake libtool cmake pkg-config
 ./scripts/build-ios-tools-universal.sh
 ```
 
-该脚本会分别为 arm64 和 x86_64 构建最低支持 macOS 13 的工具，再合并为 Universal 2 文件。
+该脚本会生成最低支持 macOS 13 的 Universal 2 iOS 工具。
 
 ## 第三方组件
 
