@@ -1,0 +1,22 @@
+# Swift Package Manager / local build products
+/.build/
+/build/
+/dist/
+/.swiftpm/
+
+# macOS and Xcode user state
+.DS_Store
+xcuserdata/
+*.xcuserstate
+
+# Local signing, notarization, and Sparkle secrets
+.env
+*.p8
+*.p12
+*.mobileprovision
+sparkle_private_key*
+*.sparkle.key
+
+# Temporary output
+*.log
+*.tmp

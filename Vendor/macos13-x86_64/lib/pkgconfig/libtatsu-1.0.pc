@@ -1,0 +1,11 @@
+prefix=/Users/YPJCoding/Code/macOS_Swift_App/QAInstaller/Vendor/macos13-x86_64
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: libtatsu
+Description: Tatsu Signing Server library for handling idevice personalization
+Version: 1.0.5
+Libs: -L${libdir} -ltatsu
+Cflags: -I${includedir}
+Requires: libplist-2.0 >= 2.6.0
