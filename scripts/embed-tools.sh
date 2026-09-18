@@ -110,7 +110,7 @@ for formula in libimobiledevice ideviceinstaller libplist libimobiledevice-glue 
 done
 
 cat > "$LICENSE_DIR/README.txt" <<'EOF'
-QA Installer bundles Android SDK Platform-Tools (adb) and components from the
+App Installer bundles Android SDK Platform-Tools (adb) and components from the
 libimobiledevice ecosystem. See the accompanying notice/license files. The
 corresponding upstream projects and source code are available from:
 

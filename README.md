@@ -66,7 +66,7 @@ DMG 及其 SHA-256 校验文件输出到 `dist/`。
 Sparkle 使用固定的 GitHub Release `updates` 作为更新源：
 
 ```text
-https://github.com/YPJCoding/App-Installer/releases/download/updates/appcast.xml
+https://github.com/YPJCoding/app-installer/releases/download/updates/appcast.xml
 ```
 
 发布新版本时：
@@ -87,7 +87,7 @@ make release-update
 make publish-update
 ```
 
-`publish-update` 会创建或更新 `YPJCoding/App-Installer` 仓库中标签为
+`publish-update` 会创建或更新 `YPJCoding/app-installer` 仓库中标签为
 `updates` 的 Release。Sparkle 私钥保存在本机钥匙串，不会写入项目或 Git。
 
 如果只想在本机检查更新包结构，可以运行 `make update-archive`；

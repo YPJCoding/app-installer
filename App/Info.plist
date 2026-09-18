@@ -4,7 +4,7 @@
     <key>CFBundleDevelopmentRegion</key><string>zh_CN</string>
     <key>CFBundleDisplayName</key><string>App Installer</string>
     <key>CFBundleExecutable</key><string>AppInstaller</string>
-    <key>CFBundleIdentifier</key><string>dev.ypjcoding.qainstaller</string>
+    <key>CFBundleIdentifier</key><string>dev.ypjcoding.appinstaller</string>
     <key>CFBundleIconFile</key><string>AppIcon</string>
     <key>CFBundleInfoDictionaryVersion</key><string>6.0</string>
     <key>CFBundleName</key><string>App Installer</string>
@@ -15,7 +15,7 @@
     <key>NSHighResolutionCapable</key><true/>
     <key>NSPrincipalClass</key><string>NSApplication</string>
     <key>SUFeedURL</key>
-    <string>https://github.com/YPJCoding/App-Installer/releases/download/updates/appcast.xml</string>
+    <string>https://github.com/YPJCoding/app-installer/releases/download/updates/appcast.xml</string>
     <key>SUPublicEDKey</key>
     <string>7nkTqclTu184JWtCxKENWcGJJbOxy7ik1gEfNg5Wdpc=</string>
     <key>SUEnableAutomaticChecks</key><true/>

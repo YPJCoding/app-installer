@@ -2,7 +2,7 @@ import SwiftUI
 import Sparkle
 
 @main
-struct QAInstallerApp: App {
+struct AppInstallerApp: App {
     private let updaterController = SPUStandardUpdaterController(
         startingUpdater: true,
         updaterDelegate: nil,

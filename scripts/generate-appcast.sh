@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 UPDATES_DIR="$ROOT_DIR/dist/updates"
 TOOL="$ROOT_DIR/.build/artifacts/sparkle/Sparkle/bin/generate_appcast"
-DOWNLOAD_PREFIX="https://github.com/YPJCoding/App-Installer/releases/download/updates/"
+DOWNLOAD_PREFIX="https://github.com/YPJCoding/app-installer/releases/download/updates/"
 
 [[ -x "$TOOL" ]] || {
     echo "找不到 generate_appcast，请先运行 swift package resolve。" >&2

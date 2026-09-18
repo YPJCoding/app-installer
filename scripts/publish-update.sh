@@ -6,7 +6,7 @@ source "$ROOT_DIR/version.env"
 UPDATES_DIR="$ROOT_DIR/dist/updates"
 ARCHIVE_PATH="$UPDATES_DIR/App-Installer-$APP_VERSION.zip"
 APPCAST_PATH="$UPDATES_DIR/appcast.xml"
-REPOSITORY="YPJCoding/App-Installer"
+REPOSITORY="YPJCoding/app-installer"
 RELEASE_TAG="updates"
 
 [[ -f "$ARCHIVE_PATH" && -f "$APPCAST_PATH" ]] || {
