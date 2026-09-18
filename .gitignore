@@ -1,22 +1,89 @@
-# Swift Package Manager / local build products
-/.build/
-/build/
-/dist/
-/.swiftpm/
-
-# macOS and Xcode user state
+# macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.DocumentRevisions-V100/
+.Spotlight-V100/
+.TemporaryItems/
+.Trashes/
+.VolumeIcon.icns
+.fseventsd/
+
+# Swift Package Manager
+/.build/
+/.swiftpm/
+/Packages/
+Package.pins
+.package.resolved
+
+# Xcode
+/DerivedData/
+/build/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
 xcuserdata/
 *.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM/
+*.dSYM.zip
+*.xcarchive/
+*.playground/xcuserdata/
+timeline.xctimeline
+playground.xcworkspace
 
-# Local signing, notarization, and Sparkle secrets
+# Build, packaging, and release output
+/dist/
+*.app
+*.dmg
+*.pkg
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.sha256
+appcast.xml
+
+# Signing, notarization, and Sparkle secrets
 .env
+.env.*
+!.env.example
+*.cer
+*.certSigningRequest
+*.key
+*.pem
 *.p8
 *.p12
 *.mobileprovision
+*.provisionprofile
 sparkle_private_key*
 *.sparkle.key
 
-# Temporary output
+# IDE and editor settings
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs, temporary files, and local caches
 *.log
 *.tmp
+*.temp
+*.bak
+*.orig
+*.rej
+.cache/
+.tmp/
+tmp/
+
+# Test and coverage output
+/.test-results/
+/.coverage/
+*.profdata
+*.profraw

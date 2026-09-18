@@ -1,57 +1,71 @@
 # App Installer
 
-面向测试团队的轻量 macOS 安装工具。连接 Android 或 iPhone，拖入 APK / IPA，即可完成安装并看到中文错误提示。
+English | [简体中文](README.zh-CN.md)
 
-## 当前功能
+App Installer is a macOS application for installing Android and iOS apps. Connect a device, then drag and drop or select an APK for Android, or an IPA for iPhone and iPad.
 
-- 自动发现 Android（ADB）和 iOS（libimobiledevice）设备
-- 拖放或选择 APK / IPA
-- Android 覆盖安装、允许降级、自动授予权限
-- 安装日志与常见错误中文化
-- 安装包/设备平台匹配检查
-- Sparkle 2 自动更新与“检查更新…”菜单
+## Features
 
-## 构建环境依赖
+- Automatically detects connected Android devices, iPhones, and iPads
+- Installs APK and IPA files by drag and drop or file selection
+- Matches each package with devices on the corresponding platform
+- Supports Android replacement installs, version downgrades, and automatic permission grants
+- Shows installation progress, command output, and readable descriptions for common errors
+- Bundles the required Android and iOS command-line tools, with no Homebrew or Android Studio installation required for users
+- Builds for Apple Silicon, Intel, or both as a Universal 2 application
+
+## Requirements
+
+- macOS 13 or later
+- Android devices must have Developer options and USB debugging enabled, and must authorize the Mac
+- iPhone and iPad must trust the Mac; some packages also require Developer Mode to be enabled
+
+IPA installation remains subject to Apple's code-signing and device authorization rules. The package must have a valid signature and include the required authorization for the target device. App Installer does not modify or bypass code signing.
+
+## Usage
+
+1. Connect an Android device, iPhone, or iPad to the Mac.
+2. Complete the trust or USB debugging authorization prompt on the device.
+3. Drag an APK or IPA into the window, or select a file manually.
+4. Select the target device and start the installation.
+
+## Build from Source
+
+App Installer is built with Swift and SwiftUI and uses Swift Package Manager for dependencies. The repository includes the prebuilt command-line tools required by the application, so a standard build does not require a separate Android or iOS toolchain.
 
 ```bash
-brew install android-platform-tools
+make build
 ```
 
-为保证完整功能支持 macOS 13，首次构建先执行：
+Build for a specific architecture:
 
 ```bash
-brew install automake libtool cmake pkg-config
-./scripts/build-ios-tools-universal.sh
+make build-arm64     # Apple Silicon
+make build-intel     # Intel
+make build-universal # Apple Silicon + Intel
 ```
 
-该脚本会从固定版本源码分别构建 arm64 与 x86_64 静态链接工具，再合成
-Universal 2 文件，并验证两个架构的最低系统版本都是 13.0。常规
-`make build` 同样生成 Universal 2 主程序，并拒绝嵌入部署目标高于 13.0
-的 iOS 工具。
-
-这些构建工具和依赖只需安装在构建机上。`make build` 会把 `adb`、`idevice_id`、
-`ideviceinstaller` 及其非系统动态库复制到 App 的
-`Contents/Resources/Tools`，并将动态库路径改写为包内相对路径。
-最终用户无需安装 Homebrew 或 Android Studio。
-
-iOS 仍遵循 Apple 签名规则：设备需信任 Mac、启用开发者模式，且 Ad Hoc 包必须包含设备 UDID。
-
-## 构建与运行
+Build and launch the application:
 
 ```bash
-make test
 make run
 ```
 
-分别构建不同架构：
+Validate the Swift package:
 
 ```bash
-make build-arm64     # Apple Silicon / M 系列
-make build-intel     # Intel Mac
-make build-universal # 同时支持两种架构
+make test
 ```
 
-制作可拖入“应用程序”安装的 DMG：
+Build output is written to:
+
+```text
+build/arm64/App Installer.app
+build/intel/App Installer.app
+build/universal/App Installer.app
+```
+
+## Create a DMG
 
 ```bash
 make dmg-arm64
@@ -59,48 +73,25 @@ make dmg-intel
 make dmg-universal
 ```
 
-DMG 及其 SHA-256 校验文件输出到 `dist/`。
+Generated DMG files and their SHA-256 checksums are written to `dist/`.
 
-## Sparkle 更新发布
+## Rebuild the iOS Tools
 
-Sparkle 使用固定的 GitHub Release `updates` 作为更新源：
-
-```text
-https://github.com/YPJCoding/app-installer/releases/download/updates/appcast.xml
-```
-
-发布新版本时：
-
-1. 在 `version.env` 中修改 `APP_VERSION`，并确保 `BUILD_NUMBER` 每次递增。
-2. 配置 Developer ID 证书和 `notarytool` 钥匙串 profile。
-3. 生成已签名、公证并由 Sparkle EdDSA 签名的更新包：
+The following build dependencies are only needed when upgrading or regenerating the iOS tools stored in `Vendor`:
 
 ```bash
-APP_IDENTITY="Developer ID Application: Your Name (TEAMID)" \
-NOTARY_PROFILE="app-installer-notary" \
-make release-update
+brew install automake libtool cmake pkg-config
+./scripts/build-ios-tools-universal.sh
 ```
 
-4. 检查 `dist/updates/` 中的 ZIP 和 `appcast.xml`，然后发布：
+The script builds the tools for arm64 and x86_64 with macOS 13 as the minimum deployment target, then combines them into Universal 2 binaries.
 
-```bash
-make publish-update
-```
+## Third-Party Components
 
-`publish-update` 会创建或更新 `YPJCoding/app-installer` 仓库中标签为
-`updates` 的 Release。Sparkle 私钥保存在本机钥匙串，不会写入项目或 Git。
+App Installer includes tools from these open-source projects:
 
-如果只想在本机检查更新包结构，可以运行 `make update-archive`；
-该命令生成的是 ad-hoc 签名包，不应用于对外发布。
+- [Android SDK Platform Tools](https://developer.android.com/tools/releases/platform-tools)
+- [libimobiledevice](https://github.com/libimobiledevice/libimobiledevice)
+- [ideviceinstaller](https://github.com/libimobiledevice/ideviceinstaller)
 
-产物分别位于 `build/arm64/App Installer.app`、
-`build/intel/App Installer.app` 和 `build/universal/App Installer.app`。
-程序优先使用包内工具；直接通过
-`swift run` 开发时，则回退到 Homebrew、Android SDK 或系统路径。
-
-## 第三方许可
-
-构建脚本会将 Android Platform Tools 的 `NOTICE.txt`，以及 iOS 工具和
-所有随包动态库的许可证文本放进
-`Contents/Resources/Tools/licenses`。对外分发前仍应由发布方审核完整的
-第三方依赖清单与 Android SDK 条款；尤其注意 ideviceinstaller 本身采用 GPL。
+Licenses and notices are copied into `Contents/Resources/Tools/licenses` when the application is built. Before distributing a modified version, review the licenses of the included components and the applicable Android SDK Platform Tools terms.
