@@ -20,4 +20,16 @@ DOWNLOAD_PREFIX="https://github.com/YPJCoding/app-installer/releases/download/up
     --maximum-versions 3 \
     "$UPDATES_DIR"
 
+# GitHub normalizes spaces in release asset names, which breaks the URLs emitted
+# by generate_appcast. Keep delta filenames URL-safe and update their references.
+for delta_path in "$UPDATES_DIR"/*.delta(N); do
+    delta_name="${delta_path:t}"
+    safe_name="${delta_name// /-}"
+    if [[ "$safe_name" != "$delta_name" ]]; then
+        mv "$delta_path" "$UPDATES_DIR/$safe_name"
+        encoded_name="${delta_name// /%20}"
+        sed -i '' "s|$encoded_name|$safe_name|g" "$UPDATES_DIR/appcast.xml"
+    fi
+done
+
 echo "Appcast: $UPDATES_DIR/appcast.xml"
