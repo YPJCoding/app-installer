@@ -9,6 +9,7 @@
 - Android 覆盖安装、允许降级、自动授予权限
 - 安装日志与常见错误中文化
 - 安装包/设备平台匹配检查
+- Sparkle 2 自动更新与“检查更新…”菜单
 
 ## 构建环境依赖
 
@@ -59,6 +60,38 @@ make dmg-universal
 ```
 
 DMG 及其 SHA-256 校验文件输出到 `dist/`。
+
+## Sparkle 更新发布
+
+Sparkle 使用固定的 GitHub Release `updates` 作为更新源：
+
+```text
+https://github.com/YPJCoding/App-Installer/releases/download/updates/appcast.xml
+```
+
+发布新版本时：
+
+1. 在 `version.env` 中修改 `APP_VERSION`，并确保 `BUILD_NUMBER` 每次递增。
+2. 配置 Developer ID 证书和 `notarytool` 钥匙串 profile。
+3. 生成已签名、公证并由 Sparkle EdDSA 签名的更新包：
+
+```bash
+APP_IDENTITY="Developer ID Application: Your Name (TEAMID)" \
+NOTARY_PROFILE="app-installer-notary" \
+make release-update
+```
+
+4. 检查 `dist/updates/` 中的 ZIP 和 `appcast.xml`，然后发布：
+
+```bash
+make publish-update
+```
+
+`publish-update` 会创建或更新 `YPJCoding/App-Installer` 仓库中标签为
+`updates` 的 Release。Sparkle 私钥保存在本机钥匙串，不会写入项目或 Git。
+
+如果只想在本机检查更新包结构，可以运行 `make update-archive`；
+该命令生成的是 ad-hoc 签名包，不应用于对外发布。
 
 产物分别位于 `build/arm64/App Installer.app`、
 `build/intel/App Installer.app` 和 `build/universal/App Installer.app`。

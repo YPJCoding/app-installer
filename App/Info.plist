@@ -14,4 +14,11 @@
     <key>LSMinimumSystemVersion</key><string>13.0</string>
     <key>NSHighResolutionCapable</key><true/>
     <key>NSPrincipalClass</key><string>NSApplication</string>
+    <key>SUFeedURL</key>
+    <string>https://github.com/YPJCoding/App-Installer/releases/download/updates/appcast.xml</string>
+    <key>SUPublicEDKey</key>
+    <string>7nkTqclTu184JWtCxKENWcGJJbOxy7ik1gEfNg5Wdpc=</string>
+    <key>SUEnableAutomaticChecks</key><true/>
+    <key>SUAutomaticallyUpdate</key><false/>
+    <key>SUVerifyUpdateBeforeExtraction</key><true/>
 </dict></plist>

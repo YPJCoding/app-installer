@@ -1,4 +1,4 @@
-.PHONY: build build-universal build-arm64 build-intel dmg-arm64 dmg-intel dmg-universal run test verify clean
+.PHONY: build build-universal build-arm64 build-intel dmg-arm64 dmg-intel dmg-universal update-archive release-update publish-update run test verify clean
 
 APP := build/universal/App Installer.app
 
@@ -21,6 +21,15 @@ dmg-intel:
 
 dmg-universal:
 	./scripts/package-dmg.sh universal
+
+update-archive:
+	./scripts/package-update.sh
+
+release-update:
+	./scripts/release-update.sh
+
+publish-update:
+	./scripts/publish-update.sh
 
 run: build
 	open "$(APP)"
