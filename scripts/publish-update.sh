@@ -21,8 +21,13 @@ if ! gh release view "$RELEASE_TAG" --repo "$REPOSITORY" >/dev/null 2>&1; then
         --notes "Sparkle automatic update feed."
 fi
 
+ASSETS=("$ARCHIVE_PATH" "$APPCAST_PATH")
+for delta_path in "$UPDATES_DIR"/*.delta(N); do
+    ASSETS+=("$delta_path")
+done
+
 gh release upload "$RELEASE_TAG" \
-    "$ARCHIVE_PATH" "$APPCAST_PATH" \
+    "${ASSETS[@]}" \
     --repo "$REPOSITORY" --clobber
 
 echo "已发布 App Installer $APP_VERSION ($BUILD_NUMBER)"
