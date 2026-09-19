@@ -39,11 +39,7 @@ IPA installation remains subject to Apple's code-signing and device authorizatio
 
 ## Build from Source
 
-App Installer is built with Swift and SwiftUI and uses Swift Package Manager for dependencies. Install Android Platform Tools before building; the required iOS tools are already included in the repository.
-
-```bash
-brew install android-platform-tools
-```
+App Installer is built with Swift and SwiftUI and uses Swift Package Manager for dependencies. The Android and iOS command-line tools required to build the app are included in the repository, so Android Platform Tools, Homebrew, and Android Studio are not required.
 
 ```bash
 make build

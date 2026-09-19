@@ -39,11 +39,7 @@ IPA 的安装仍受 Apple 签名与设备授权规则限制。安装包必须具
 
 ## 从源码构建
 
-项目使用 Swift 和 SwiftUI 开发，并通过 Swift Package Manager 管理依赖。构建前需要安装 Android Platform Tools；仓库已经包含所需的 iOS 工具。
-
-```bash
-brew install android-platform-tools
-```
+项目使用 Swift 和 SwiftUI 开发，并通过 Swift Package Manager 管理依赖。仓库已经包含构建应用所需的 Android 与 iOS 命令行工具，无需另外安装 Android Platform Tools、Homebrew 或 Android Studio。
 
 ```bash
 make build
