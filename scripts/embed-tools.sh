@@ -14,21 +14,16 @@ mkdir -p "$BIN_DIR" "$LIB_DIR" "$LICENSE_DIR"
 
 locate_tool() {
     local name="$1"
-    local candidate
-    for candidate in "$VENDOR_DIR/bin/$name" "/opt/homebrew/bin/$name" "/usr/local/bin/$name" "$HOME/Library/Android/sdk/platform-tools/$name"; do
-        if [[ -x "$candidate" ]]; then
-            echo "$candidate"
-            return 0
-        fi
-    done
-    return 1
+    local tool="$VENDOR_DIR/bin/$name"
+    [[ -x "$tool" ]] || return 1
+    echo "$tool"
 }
 
 for name in adb idevice_id ideviceinstaller; do
     source_path="$(locate_tool "$name" || true)"
     [[ -n "$source_path" ]] || {
-        echo "缺少 $name。请先安装构建依赖后再打包。" >&2
-        echo "  brew install android-platform-tools libimobiledevice ideviceinstaller" >&2
+        echo "Vendor 中缺少 $name，无法创建可复现的应用包。" >&2
+        echo "请恢复 Vendor/macos13-universal，或按 README 的说明重建工具。" >&2
         exit 1
     }
     cp -L "$source_path" "$BIN_DIR/$name"
@@ -80,13 +75,6 @@ done
 for library in "$LIB_DIR"/*.dylib(N); do
     install_name_tool -id "@loader_path/${library:t}" "$library"
 done
-
-adb_source="$(locate_tool adb)"
-if [[ -L "$adb_source" ]]; then
-    adb_source="$(readlink "$adb_source")"
-fi
-adb_notice="${adb_source:h}/NOTICE.txt"
-[[ -f "$adb_notice" ]] && cp "$adb_notice" "$LICENSE_DIR/Android-SDK-Platform-Tools-NOTICE.txt"
 
 # 将所有实际或间接依赖的许可证随 App 一起交付；不依赖网络下载。
 if [[ -d "$VENDOR_DIR/licenses" ]]; then

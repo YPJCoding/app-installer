@@ -18,8 +18,10 @@ for arch in arm64 x86_64; do
     fi
 done
 
-rm -rf "$UNIVERSAL_DIR"
 mkdir -p "$UNIVERSAL_DIR/bin" "$UNIVERSAL_DIR/licenses"
+rm -f "$UNIVERSAL_DIR/bin/idevice_id" "$UNIVERSAL_DIR/bin/ideviceinstaller"
+find "$UNIVERSAL_DIR/licenses" -type f \
+    ! -name 'Android-SDK-Platform-Tools-NOTICE.txt' -delete
 for tool in idevice_id ideviceinstaller; do
     lipo -create \
         "$ROOT_DIR/Vendor/macos13-arm64/bin/$tool" \

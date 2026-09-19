@@ -17,6 +17,11 @@ struct AppInstallerApp: App {
         .windowStyle(.titleBar)
         .windowToolbarStyle(.unified)
         .commands {
+            CommandGroup(replacing: .appInfo) {
+                Button("关于 App Installer") {
+                    AboutPanel.show()
+                }
+            }
             CommandGroup(after: .appInfo) {
                 Button("检查更新…") {
                     updaterController.updater.checkForUpdates()

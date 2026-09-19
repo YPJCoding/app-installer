@@ -5,7 +5,6 @@ import UniformTypeIdentifiers
 struct ContentView: View {
     @StateObject private var state = AppState()
     @State private var isDropTarget = false
-    @State private var isShowingAbout = false
 
     var body: some View {
         HSplitView {
@@ -24,14 +23,10 @@ struct ContentView: View {
                 }
                 .keyboardShortcut("r")
                 .disabled(state.phase == .installing || state.phase == .refreshing)
-                Button { isShowingAbout = true } label: {
+                Button { AboutPanel.show() } label: {
                     Label("关于 App Installer", systemImage: "info.circle")
                 }
-                .help("关于 App Installer")
             }
-        }
-        .sheet(isPresented: $isShowingAbout) {
-            AboutView()
         }
     }
 

@@ -18,6 +18,7 @@ DOWNLOAD_PREFIX="https://github.com/YPJCoding/app-installer/releases/download/up
 "$TOOL" \
     --download-url-prefix "$DOWNLOAD_PREFIX" \
     --maximum-versions 3 \
+    --maximum-deltas 0 \
     "$UPDATES_DIR"
 
 # GitHub normalizes spaces in release asset names, which breaks the URLs emitted
